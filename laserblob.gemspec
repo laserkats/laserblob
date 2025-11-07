@@ -1,4 +1,4 @@
-require_relative "lib/laserblob/version"
+require_relative "lib/laser_blob/version"
 
 Gem::Specification.new do |spec|
   spec.name        = "laserblob"

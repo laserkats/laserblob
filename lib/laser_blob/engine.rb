@@ -12,7 +12,7 @@ module LaserBlob
 
     initializer "laserblob.active_record", before: :load_config_initializers do
       ActiveSupport.on_load(:active_record) do
-        require "laserblob/model_extensions"
+        require "laser_blob/model_extensions"
         ActiveRecord::Base.include(LaserBlob::ModelExtensions)
       end
     end
