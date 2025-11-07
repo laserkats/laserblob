@@ -19,7 +19,7 @@ module Laserblob
       end
 
       def create_initializer
-        template "initializer.rb", "config/initializers/laserblob.rb"
+        template "initializer.rb", "config/initializers/laser_blob.rb"
       end
 
       def show_readme

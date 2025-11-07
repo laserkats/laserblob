@@ -1,16 +1,16 @@
-require "laserblob/version"
-require "laserblob/engine"
-require "laserblob/blob_helpers"
-require "laserblob/storage/filesystem"
-require "laserblob/storage/s3"
-require "laserblob/model_extensions"
+require "laser_blob/version"
+require "laser_blob/engine"
+require "laser_blob/blob_helpers"
+require "laser_blob/storage/filesystem"
+require "laser_blob/storage/s3"
+require "laser_blob/model_extensions"
 
 # Require models explicitly since they're in a gem
-require_relative "../app/models/laserblob/blob"
-require_relative "../app/models/laserblob/attachment"
-require_relative "../app/models/laserblob/blob/image"
-require_relative "../app/models/laserblob/blob/video"
-require_relative "../app/models/laserblob/blob/pdf"
+require_relative "../app/models/laser_blob/blob"
+require_relative "../app/models/laser_blob/attachment"
+require_relative "../app/models/laser_blob/blob/image"
+require_relative "../app/models/laser_blob/blob/video"
+require_relative "../app/models/laser_blob/blob/pdf"
 
 module LaserBlob
   mattr_accessor :storage_config
