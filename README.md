@@ -320,8 +320,8 @@ create_table :attachments, id: :uuid do |t|
   t.string :type                    # Attachment type (e.g., "avatar", "photo")
   t.integer :order, default: 0      # Order for has_many_blobs
   t.string :filename                # Original filename
-  t.string :record_type             # Polymorphic record type
-  t.uuid :record_id                 # Polymorphic record ID
+  t.string :record_type, null: false  # Polymorphic record type
+  t.uuid :record_id, null: false      # Polymorphic record ID
   t.uuid :blob_id, null: false      # Reference to blob
   t.timestamps
 end

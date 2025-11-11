@@ -4,7 +4,7 @@ module LaserBlob
     self.inheritance_column = nil
 
     belongs_to :blob, class_name: 'LaserBlob::Blob'
-    belongs_to :record, polymorphic: true
+    belongs_to :record, polymorphic: true, optional: false
 
     before_validation { self.order ||= 0 }
     before_save :default_filename
