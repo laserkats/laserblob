@@ -1,11 +1,10 @@
-require 'aws-sdk-s3'
-
 module LaserBlob
   module Storage
     class S3
       attr_reader :bucket, :client
 
       def initialize(config = {})
+        require 'aws-sdk-s3'
         @bucket = config[:bucket]
         @client = Aws::S3::Client.new(
           access_key_id: config[:access_key_id],
