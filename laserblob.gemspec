@@ -7,7 +7,7 @@ Gem::Specification.new do |spec|
   spec.email       = ["jonbracy@gmail.com", "ben@ehmke.com"]
   spec.homepage    = "https://github.com/laserkats/laserblob"
   spec.summary     = "Content-addressable blob storage for Rails applications"
-  spec.description = "LaserBlob provides a Blob model with SHA1-based deduplication, polymorphic attachments, and support for multiple storage backends (filesystem, S3). Includes automatic metadata extraction for images, videos, and PDFs."
+  spec.description = "LaserBlob provides a Blob model with SHA1-based deduplication, polymorphic attachments, and support for multiple storage backends (filesystem, S3). Includes automatic metadata extraction for images, videos, PDFs, and spreadsheets."
   spec.license     = "MIT"
 
   spec.metadata["homepage_uri"] = spec.homepage
@@ -25,4 +25,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "ruby-vips"
   spec.add_development_dependency "streamio-ffmpeg"
   spec.add_development_dependency "pdf-reader"
+  spec.add_development_dependency "roo"
 end
