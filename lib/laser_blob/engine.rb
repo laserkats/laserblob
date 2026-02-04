@@ -16,5 +16,11 @@ module LaserBlob
         ActiveRecord::Base.include(LaserBlob::ModelExtensions)
       end
     end
+
+    initializer "laserblob.sqlite_serialization", after: "active_record.initialize_database" do
+      if ActiveRecord::Base.connection.adapter_name.downcase.include?('sqlite')
+        LaserBlob::Blob.serialize :metadata, coder: JSON
+      end
+    end
   end
 end

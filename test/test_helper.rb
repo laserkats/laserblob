@@ -24,10 +24,6 @@ load File.expand_path("dummy/db/schema.rb", __dir__)
   end
 end
 
-LaserBlob::Blob.class_eval do
-  serialize :metadata, coder: JSON
-end
-
 # Configure storage for tests
 LaserBlob.storage_config = {
   storage: 'filesystem',
