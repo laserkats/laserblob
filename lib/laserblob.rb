@@ -1,0 +1,1 @@
+require "laser_blob"

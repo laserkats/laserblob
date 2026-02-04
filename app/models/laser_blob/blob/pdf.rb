@@ -19,10 +19,10 @@ module LaserBlob
     end
 
     def self.process(record, path)
-      require 'pdf-reader' unless defined?(PDF::Reader)
+      require 'pdf-reader' unless defined?(::PDF::Reader)
 
       record.metadata = {
-        'pages' => PDF::Reader.new(path).pages.map { |page|
+        'pages' => ::PDF::Reader.new(path).pages.map { |page|
           { 'width' => page.width, 'height' => page.height }
         }
       }
