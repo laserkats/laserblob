@@ -75,15 +75,17 @@ class LaserBlob::Blob::SpreadsheetTest < ActiveSupport::TestCase
     assert_equal :xlsx, LaserBlob::Blob::Spreadsheet.extension_for_content_type('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
   end
 
-  test 'processing spreadsheet extracts correct metadata' do
-    skip "Requires roo gem" unless defined?(Roo) || (require 'roo' rescue false)
+  test 'process! extracts spreadsheet metadata' do
+    begin
+      require 'roo'
+    rescue LoadError
+      skip "Requires roo gem"
+    end
 
     spreadsheet = LaserBlob::Blob.create!(
       file: Rack::Test::UploadedFile.new(FIXTURES.join('test.csv'), 'text/csv', true)
     )
-    spreadsheet.open do |file|
-      LaserBlob::Blob::Spreadsheet.process(spreadsheet, file.path)
-    end
+    spreadsheet.process!
 
     assert_equal 1, spreadsheet.sheet_count
     assert_equal 4, spreadsheet.row_count
