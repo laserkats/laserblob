@@ -96,6 +96,14 @@ module LaserBlob
       basename ||= ['', extension]
       self.class.storage.copy_to_tempfile(id, basename: basename, &block)
     end
+    
+    def process!
+      klass = self.type&.safe_constantize
+      if klass.respond_to?(:process)
+        self.open { |file| klass.process(self, file.path) }
+      end
+      self.save!
+    end
 
     private
 
