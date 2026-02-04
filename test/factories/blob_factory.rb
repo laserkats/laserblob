@@ -23,10 +23,7 @@ FactoryBot.define do
 
   factory :video, class: 'LaserBlob::Blob::Video' do
     file do
-      f = Tempfile.new(['video', '.mp4'], binmode: true)
-      f.write(SecureRandom.random_bytes(100))
-      f.flush
-      Rack::Test::UploadedFile.new(f.path, 'video/mp4', true)
+      Rack::Test::UploadedFile.new(FIXTURES.join('test.mp4'), 'video/mp4', true)
     end
   end
 

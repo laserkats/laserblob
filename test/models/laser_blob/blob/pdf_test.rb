@@ -22,4 +22,20 @@ class LaserBlob::Blob::PDFTest < ActiveSupport::TestCase
     assert_equal 5, blob.page_count
   end
 
+  test 'process! extracts pdf metadata' do
+    begin
+      require 'pdf-reader'
+    rescue LoadError
+      skip "Requires pdf-reader gem"
+    end
+
+    pdf = create(:pdf)
+    pdf.process!
+
+    assert_equal 1, pdf.page_count
+    assert_equal 612.0, pdf.metadata['pages'].first['width']
+    assert_equal 792.0, pdf.metadata['pages'].first['height']
+    assert_in_delta 0.7727, pdf.aspect_ratio, 0.001
+  end
+
 end

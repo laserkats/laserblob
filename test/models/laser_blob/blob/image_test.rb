@@ -17,14 +17,20 @@ class LaserBlob::Blob::ImageTest < ActiveSupport::TestCase
     assert blob.errors[:content_type].present?
   end
 
-  test 'metadata extraction for image' do
-    skip "Requires ruby-vips and test image fixture" unless defined?(Vips)
+  test 'process! extracts image metadata' do
+    begin
+      require 'vips'
+    rescue LoadError
+      skip "Requires ruby-vips"
+    end
 
     image = create(:image)
     image.process!
 
-    assert image.metadata['width'].present?
-    assert image.metadata['height'].present?
+    assert_equal 1, image.width
+    assert_equal 1, image.height
+    assert image.dominant_color.present?
+    assert image.background_color.present?
   end
 
   test 'width and height accessors' do
