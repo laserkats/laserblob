@@ -22,5 +22,13 @@ module LaserBlob
         LaserBlob::Blob.serialize :metadata, coder: JSON
       end
     end
+
+    initializer "laserblob.eager_load_blob_subclasses", after: :load_config_initializers do
+      # Eagerly load Blob subclasses so they appear in descendants
+      # This is needed for content_type_class to find the right subclass
+      Dir[File.expand_path('../../app/models/laser_blob/blob/*.rb', __dir__)].each do |file|
+        require file
+      end
+    end
   end
 end

@@ -26,4 +26,10 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "streamio-ffmpeg"
   spec.add_development_dependency "pdf-reader"
   spec.add_development_dependency "roo"
+  
+  # Optional dependencies for testing
+  spec.add_development_dependency 'sqlite3'
+  spec.add_development_dependency 'factory_bot_rails'
+  spec.add_development_dependency 'webmock'
+  spec.add_development_dependency 'rack-test'
 end
