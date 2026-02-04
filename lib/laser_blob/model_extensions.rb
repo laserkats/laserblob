@@ -3,8 +3,28 @@ module LaserBlob
     extend ActiveSupport::Concern
 
     class_methods do
-      def has_one_blob(name, dependent: :destroy)
+      def has_one_blob(name, only: nil, dependent: :destroy)
         has_one :"#{name}", -> { where(type: name) }, class_name: "::LaserBlob::Attachment", as: :record, inverse_of: :record, dependent: dependent
+
+        if only
+          allowed_blob_types = only.map do |type|
+            if type.is_a?(Class)
+              type
+            else
+              "LaserBlob::Blob::#{type.to_s.classify}".constantize
+            end
+          end
+
+          define_method(:"validate_#{name}_blob_type") do
+            attachment = send(name)
+            return unless attachment&.blob
+            unless allowed_blob_types.any? { |type| attachment.blob.is_a?(type) }
+              allowed_names = allowed_blob_types.map { |t| t.name.demodulize.downcase }
+              errors.add(name, "has invalid blob type '#{attachment.blob.class.name.demodulize.downcase}'. Allowed types: #{allowed_names.join(', ')}")
+            end
+          end
+          validate :"validate_#{name}_blob_type"
+        end
 
         class_eval <<-RUBY, __FILE__, __LINE__ + 1
           def #{name}_attributes=(attrs)
@@ -43,7 +63,7 @@ module LaserBlob
         RUBY
       end
 
-      def has_many_blobs(name, **options)
+      def has_many_blobs(name, only: nil, **options)
         options[:dependent] ||= :destroy
         options = {
           dependent: :destroy,
@@ -54,6 +74,27 @@ module LaserBlob
         }.merge(options)
         singular = name.to_s.singularize
         has_many :"#{name}", -> { where(type: singular).order(order: :asc) }, **options
+
+        if only
+          allowed_blob_types = only.map do |type|
+            if type.is_a?(Class)
+              type
+            else
+              "LaserBlob::Blob::#{type.to_s.classify}".constantize
+            end
+          end
+
+          define_method(:"validate_#{name}_blob_types") do
+            send(name).each do |attachment|
+              next unless attachment.blob
+              unless allowed_blob_types.any? { |type| attachment.blob.is_a?(type) }
+                allowed_names = allowed_blob_types.map { |t| t.name.demodulize.downcase }
+                errors.add(name, "contains invalid blob type '#{attachment.blob.class.name.demodulize.downcase}'. Allowed types: #{allowed_names.join(', ')}")
+              end
+            end
+          end
+          validate :"validate_#{name}_blob_types"
+        end
 
         class_eval <<-RUBY, __FILE__, __LINE__ + 1
           def #{name}_attributes=(attributes)

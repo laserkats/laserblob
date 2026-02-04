@@ -18,7 +18,7 @@ ActiveRecord::Schema.verbose = false
 load File.expand_path("dummy/db/schema.rb", __dir__)
 
 # Configure models for testing with string IDs
-[LaserBlob::Blob, LaserBlob::Attachment, Document].each do |klass|
+[LaserBlob::Blob, LaserBlob::Attachment, Document, ImageDocument].each do |klass|
   klass.class_eval do
     before_create { self.id ||= SecureRandom.uuid }
   end
